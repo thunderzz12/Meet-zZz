@@ -119,12 +119,11 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-[#313338] text-discord-text selection:bg-discord-blurple selection:text-white font-sans">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-[#2B2D31]">
+      <div className="relative overflow-hidden bg-[#2B2D31] min-h-screen flex items-center">
         <div className="absolute inset-0 opacity-20 pointer-events-none bg-noise"></div>
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-discord-blurple/5 to-transparent pointer-events-none"></div>
         
-        <div className="max-w-7xl mx-auto px-6 pt-20 pb-24 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 pt-20 pb-24 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div 
               initial={{ opacity: 0, x: -50 }}

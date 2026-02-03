@@ -1,5 +1,29 @@
 const history = [
   {
+    version: "1.6.0",
+    date: "2026-02-04",
+    changes: [
+      {
+        type: "added",
+        title: "Onboarding & Identity",
+        items: [
+          "Complete Welcome Interface: Set your Display Name, Profile Picture, and Name Color.",
+          "Account System: Generated Recovery Keys so you can restore your identity later.",
+          "Added Advanced Settings with a specialized Delete Account button."
+        ]
+      },
+      {
+        type: "added",
+        title: "Social Features",
+        items: [
+          "Ping System: @mentions now highlight the message in yellow for the recipient.",
+          "Reply System: You can now reply to specific messages (also highlights the user).",
+          "Live Online Count: Added an indicator to show how many people are currently in the chat."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.5.0",
     date: "2026-02-02", 
     changes: [

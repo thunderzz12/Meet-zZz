@@ -119,9 +119,12 @@ export function Home() {
 
   return (
     <div className="min-h-screen bg-[#313338] text-discord-text selection:bg-discord-blurple selection:text-white font-sans">
-      <div className="relative overflow-hidden bg-[#2B2D31] min-h-screen flex items-center">
-        <div className="absolute inset-0 opacity-20 pointer-events-none bg-noise"></div>
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-discord-blurple/5 to-transparent pointer-events-none"></div>
+      
+      {/* --- HERO SECTION --- */}
+      <div id="home" className="relative overflow-hidden bg-gradient-to-b from-[#313338] to-[#2B2D31] min-h-screen flex items-center">
+        {/* Background Effects */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-discord-blurple/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/4"></div>
         
         <div className="max-w-7xl mx-auto px-6 pt-20 pb-24 relative z-10 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -179,9 +182,12 @@ export function Home() {
         </div>
       </div>
 
-      <div id="features" className="py-32 bg-[#313338] relative overflow-hidden">
-        <div className="absolute top-1/4 -left-64 w-96 h-96 bg-discord-blurple/10 rounded-full blur-[128px] pointer-events-none"></div>
-        <div className="absolute bottom-1/4 -right-64 w-96 h-96 bg-pink-500/10 rounded-full blur-[128px] pointer-events-none"></div>
+      {/* --- FEATURES SECTION --- */}
+      <div id="features" className="py-20 bg-[#2B2D31] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#2B2D31] to-transparent opacity-0"></div>
+        {/* Spotlights */}
+        <div className="absolute top-1/4 -left-64 w-96 h-96 bg-discord-blurple/5 rounded-full blur-[128px] pointer-events-none"></div>
+        <div className="absolute bottom-1/4 -right-64 w-96 h-96 bg-pink-500/5 rounded-full blur-[128px] pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-20">
@@ -209,8 +215,11 @@ export function Home() {
         </div>
       </div>
 
-      <div className="py-32 bg-[#2B2D31] border-y border-[#1E1F22] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 pointer-events-none bg-noise"></div>
+      {/* --- EVOLVING / GIT LOG SECTION --- */}
+      <div className="py-32 bg-[#2B2D31] relative overflow-hidden">
+        {/* Subtle separator */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[#3F4147] to-transparent"></div>
+        
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
@@ -225,9 +234,6 @@ export function Home() {
                 <div className="flex items-center gap-4 text-gray-300">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                   <span>Active Development</span>
-                </div>
-                <div className="flex items-center gap-4 text-gray-300">
-                  
                 </div>
               </div>
 
@@ -271,8 +277,9 @@ export function Home() {
         </div>
       </div>
 
-      <div id="contact" className="py-32 bg-[#1E1F22] relative overflow-hidden flex flex-col items-center justify-center">
-        <div className="absolute inset-0 opacity-30 bg-gradient-to-br from-discord-blurple/20 via-transparent to-pink-500/20"></div>
+      {/* --- READY / CONTACT SECTION --- */}
+      <div id="contact" className="py-32 bg-gradient-to-b from-[#2B2D31] to-[#111214] relative overflow-hidden flex flex-col items-center justify-center">
+        <div className="absolute inset-0 opacity-20 bg-gradient-to-br from-discord-blurple/10 via-transparent to-pink-500/10"></div>
         
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div

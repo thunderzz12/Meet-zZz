@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { io } from 'socket.io-client';
 import { 
   Mic, MicOff, Video, VideoOff, PhoneOff, Hand, MoreVertical, 
   Info, MessageSquare, Users, Gift, Smile, PlusCircle, X 
@@ -9,7 +10,7 @@ export function ChatPreview() {
   // global count
   const [reactionCount, setReactionCount] = useState(() => {
     const cached = localStorage.getItem('meet_zzz_cached_count');
-    return cached ? parseInt(cached, 10) : 1;
+    return cached ? parseInt(cached, 10) : 0;
   });
 
   // local
@@ -17,53 +18,63 @@ export function ChatPreview() {
     return !!localStorage.getItem('meet_zzz_has_liked');
   });
   const [isReacting, setIsReacting] = useState(false);
+  const socketRef = useRef(null);
+  
+  // anti spam
+  const serverLikedState = useRef(hasLiked); 
+  const debounceTimer = useRef(null);
 
   useEffect(() => {
-    fetch('https://api.counterapi.dev/v1/meet-zzz/heart')
-      .then(res => res.json())
-      .then(data => {
-        if (data && typeof data.count === 'number') {
-          setReactionCount(prev => {
-            const newVal = Math.max(prev, data.count);
-            localStorage.setItem('meet_zzz_cached_count', newVal.toString());
-            return newVal;
-          });
-        }
-      })
-      .catch(err => {
-        // if errorr
-        console.warn('Could not fetch heart count:', err);
-      });
-      
-      // retry if fail
-    if (hasLiked && reactionCount === 1) {
-      setHasLiked(false);
-      localStorage.removeItem('meet_zzz_has_liked');
-    }
+    // Connect to the backend
+    socketRef.current = io('https://institutional-operation-coated-trans.trycloudflare.com');
+
+    socketRef.current.on('connect', () => {
+      socketRef.current.emit('get_heart_count');
+    });
+
+    socketRef.current.on('heart_count_update', (count) => {
+      setReactionCount(count);
+      localStorage.setItem('meet_zzz_cached_count', count.toString());
+    });
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
   }, []);
 
   const handleReactionClick = () => {
     setIsReacting(true);
     setTimeout(() => setIsReacting(false), 500); // reset animation
 
-    if (hasLiked) {
-      console.log("You already liked it! But thanks for the enthusiasm.");
-      return;
-    }
+    const newHasLiked = !hasLiked;
+    const newCount = newHasLiked ? reactionCount + 1 : reactionCount - 1;
 
-    const newCount = reactionCount + 1;
+    // Optimistic update (Instant feedback for the user)
+    setHasLiked(newHasLiked);
     setReactionCount(newCount);
-    setHasLiked(true);
     
-
-    localStorage.setItem('meet_zzz_has_liked', 'true');
+    if (newHasLiked) {
+      localStorage.setItem('meet_zzz_has_liked', 'true');
+    } else {
+      localStorage.removeItem('meet_zzz_has_liked');
+    }
     localStorage.setItem('meet_zzz_cached_count', newCount.toString());
 
-    // Actually tell the server
-    fetch('https://api.counterapi.dev/v1/meet-zzz/heart/up')
-      .catch(err => {
-        console.error('Failed to increment reaction:', err);
-      });
+    // debounce
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      if (newHasLiked !== serverLikedState.current) {
+        if (socketRef.current) {
+          socketRef.current.emit('toggle_heart', { increment: newHasLiked });
+          serverLikedState.current = newHasLiked; 
+        }
+      }
+    }, 1000);
   };
 
   return (
